@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message, MessageBox } from 'element-ui'
+import { Message, MessageBox, Notification } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
 
@@ -31,7 +31,13 @@ service.interceptors.response.use(
      * code为非20000是抛错 可结合自己业务进行修改
      */
     const res = response.data
-    if (res.code !== 20000) {
+    if (res.code === 41000) {
+      Notification.error({
+        title: '错误',
+        message: res.msg
+      })
+    }
+    if (res.code !== 20000 && res.code !== 41000) {
       Message({
         message: res.message,
         type: 'error',
